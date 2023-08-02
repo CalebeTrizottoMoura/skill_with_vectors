@@ -68,9 +68,9 @@ void menu_change(int *internal_option, int *change_code){
     }
 }
 
-void name_change(std::string array_name, char array_gender, int array_age, double array_height){
+void name_change(std::string *array_name, char array_gender, int array_age, double array_height, int *cont_new){
     std::cout << "========= ALTERAR NOME =========\n";
-    std::cout << "Nome: " << array_name << "  <-----\n";
+    std::cout << "Nome: " << *array_name << "  <-----\n";
     std::cout << "Sexo: " << array_gender << std::endl;
     std::cout << "Idade: " << array_age << std::endl;
     std::cout << "Altura: " << array_height << std::endl;
@@ -79,48 +79,53 @@ void name_change(std::string array_name, char array_gender, int array_age, doubl
     std::cout << "\nDigite o novo nome: ";
     getline(std::cin, new_name);
 
-    array_name = new_name;
+    *array_name = new_name;
+    *cont_new = 1;
 }
 
-void gender_change(std::string array_name, char array_gender, int array_age, double array_height){
+void gender_change(std::string array_name, char *array_gender, int array_age, double array_height, int *cont_new){
     std::cout << "========= ALTERAR SEXO =========\n";
     std::cout << "Nome: " << array_name << std::endl;
-    std::cout << "Sexo: " << array_gender << "  <-----\n";
+    std::cout << "Sexo: " << *array_gender << "  <-----\n";
     std::cout << "Idade: " << array_age << std::endl;
     std::cout << "Altura: " << array_height << std::endl;
 
     char new_gender;
     std::cout << "\nDigite o novo sexo: ";
     std::cin >> new_gender;
-    array_gender = new_gender;
+    *array_gender = new_gender;
+    *cont_new = 1;
 }
 
-void age_change(std::string array_name, char array_gender, int array_age, double array_height){
+void age_change(std::string array_name, char array_gender, int *array_age, double array_height, int *cont_new){
     std::cout << "========= ALTERAR IDADE =========\n";
     std::cout << "Nome: " << array_name << std::endl;
     std::cout << "Sexo: " << array_gender << std::endl;
-    std::cout << "Idade: " << array_age << "  <-----\n";
+    std::cout << "Idade: " << *array_age << "  <-----\n";
     std::cout << "Altura: " << array_height << std::endl;
 
-    int new_age;
+    int new_age = 0;
     std::cout << "\nDigite a nova idade: ";                                    
     std::cin >> new_age;
     
-    array_age = new_age;
+    *array_age = new_age;
+    *cont_new = 1;
 }
 
-void height_change(std::string array_name, char array_gender, int array_age, double array_height){
+void height_change(std::string array_name, char array_gender, int array_age, double *array_height, int *cont_new){
+    std::cin.ignore(INT_MAX, '\n');
     std::cout << "========= ALTERAR ALTURA =========\n";
     std::cout << "Nome: " << array_name << std::endl;
     std::cout << "Sexo: " << array_gender << std::endl;
     std::cout << "Idade: " << array_age << std::endl;
-    std::cout << "Altura: " << array_height << "  <-----\n";
+    std::cout << "Altura: " << *array_height << "  <-----\n";
 
-    double new_height;
-    std::cout << "\nDigite a nova altura: ";                                    
+    double new_height = 0;
+    std::cout << "\nDigite a nova altura: ";                                  
     std::cin >> new_height;
     
-    array_height = new_height;
+    *array_height = new_height;
+    *cont_new = 1;
 }
 
 int main(){
@@ -139,7 +144,7 @@ int main(){
 
     for(int i = 0; i < numb_peaple; i++){
         std::cin.ignore(INT_MAX, '\n');
-        code[i] = i + 1234;
+        code[i] = i + 1000;
 
         std::cout << "========= DADOS DA " << i + 1 << "ª PESSOA =========\n";
         std::cout << "Nome: ";
@@ -185,6 +190,7 @@ int main(){
         }
         system("cls");
         cont++;
+        internal_option = 0;
 
         main_menu(&option);
 
@@ -201,16 +207,16 @@ int main(){
             case 4:
                 percentage(percentage_femenine, sum_femenine, percentage_masculine, sum_masculine);
                 break;
-            case 5:                
+            case 5:
                 do{
-                    if(cont_new > 0 && internal_option != 5){
+                    if(cont_new > 0){
+                        cont_new = 0;
                         system("cls");
                         std::cout << "========= RESULTADO =========\n";
                         std::cout << "Dados alterados com sucesso!\n\n";
                         system("pause");
                         system("cls");
                     }
-                    cont_new++;
 
                     menu_change(&internal_option, &change_code);
                     
@@ -218,7 +224,7 @@ int main(){
                         case 1:                     
                             for(int i = 0; i < numb_peaple; i++){
                                 if(code[i] == change_code){
-                                    name_change(array_name[i], array_gender[i], array_age[i], array_height[i]);
+                                    name_change(&array_name[i], array_gender[i], array_age[i], array_height[i], &cont_new);
                                     break; 
                                 }
                             }
@@ -226,7 +232,7 @@ int main(){
                         case 2: 
                             for(int i = 0; i < numb_peaple; i++){
                                 if(code[i] == change_code){
-                                    gender_change(array_name[i], array_gender[i], array_age[i], array_height[i]);
+                                    gender_change(array_name[i], &array_gender[i], array_age[i], array_height[i], &cont_new);
                                     break; 
                                 }
                             }
@@ -234,7 +240,7 @@ int main(){
                         case 3: 
                             for(int i = 0; i < numb_peaple; i++){
                                 if(code[i] == change_code){
-                                    age_change(array_name[i], array_gender[i], array_age[i], array_height[i]);
+                                    age_change(array_name[i], array_gender[i], &array_age[i], array_height[i], &cont_new);
 
                                     int sum_new_age = 0;
                                     for(int i = 0; i < numb_peaple; i++){
@@ -250,7 +256,7 @@ int main(){
                         case 4: 
                             for(int i = 0; i < numb_peaple; i++){
                                 if(code[i] == change_code){
-                                    height_change(array_name[i], array_gender[i], array_age[i], array_height[i]);
+                                    height_change(array_name[i], array_gender[i], array_age[i], &array_height[i], &cont_new);
 
                                     double sum_new_height;
                                     for(int i = 0; i < numb_peaple; i++){
